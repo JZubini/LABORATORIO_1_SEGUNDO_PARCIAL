@@ -377,6 +377,7 @@ int controller_saveArcadesAsText(char* path , LinkedList* pArrayListArcade)
 	  Arcade* pArcadeAuxiliar;
 	  int tamanoLista;
 	  int retorno = FALSE;
+	  char auxTipoDeSonidad[TAM_DATOS];
 	  if(path != NULL && pArrayListArcade != NULL){
 		  if(file != NULL)
 		  {
@@ -385,10 +386,16 @@ int controller_saveArcadesAsText(char* path , LinkedList* pArrayListArcade)
 			  for(int i=0; i<tamanoLista; i++)
 			  {
 				  pArcadeAuxiliar = ll_get(pArrayListArcade,i);
-				  if(fprintf(file,"%d,%s,%d,%d,%d,%s,%s\n",
+				  if(pArcadeAuxiliar->tipoDeSonidad == 0){
+					  strcpy(auxTipoDeSonidad,"MONO");
+				  }
+				  if(pArcadeAuxiliar->tipoDeSonidad == 1){
+				  	  strcpy(auxTipoDeSonidad,"STEREO");
+				  }
+				  if(fprintf(file,"%d,%s,%s,%d,%d,%s,%s\n",
 						  pArcadeAuxiliar->IDArcade,
 						  pArcadeAuxiliar->nacionalidadArcade,
-						  pArcadeAuxiliar->tipoDeSonidad,
+						  auxTipoDeSonidad,
 						  pArcadeAuxiliar->cantidadDeJugadores,
 						  pArcadeAuxiliar->capacidadMaximaDeFichas,
 						  pArcadeAuxiliar->nombreDelSalon,
@@ -557,6 +564,7 @@ int controller_saveMultiplayerArcadesAsText(char* path , LinkedList* pArrayListA
 	FILE* file = fopen(path,"w");
 	Arcade* pArcadeAuxiliar;
 	int tamanioLista;
+	char auxTipoDeSonidad[TAM_DATOS];
 	if(path != NULL && pArrayListArcade != NULL){
 		void* criterio = controller_verificarArcadesMultiplayer;
 		LinkedList* listaFiltrada = ll_filter(pArrayListArcade,criterio);
@@ -565,10 +573,16 @@ int controller_saveMultiplayerArcadesAsText(char* path , LinkedList* pArrayListA
 		fprintf(file,"id,nacionalidad,tipo_sonido,cant_jug,fichas_max,salon,game\n");
 		for(int i = 0;i<tamanioLista;i++){
 			pArcadeAuxiliar = ll_get(listaFiltrada,i);
-			if(fprintf(file,"%d,%s,%d,%d,%d,%s,%s\n",
+			if(pArcadeAuxiliar->tipoDeSonidad == 0){
+				 strcpy(auxTipoDeSonidad,"MONO");
+			}
+			if(pArcadeAuxiliar->tipoDeSonidad == 1){
+				strcpy(auxTipoDeSonidad,"STEREO");
+			 }
+			if(fprintf(file,"%d,%s,%s,%d,%d,%s,%s\n",
 				 pArcadeAuxiliar->IDArcade,
 				 pArcadeAuxiliar->nacionalidadArcade,
-				 pArcadeAuxiliar->tipoDeSonidad,
+				 auxTipoDeSonidad,
 				 pArcadeAuxiliar->cantidadDeJugadores,
 				 pArcadeAuxiliar->capacidadMaximaDeFichas,
 				 pArcadeAuxiliar->nombreDelSalon,
